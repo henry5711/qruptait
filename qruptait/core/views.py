@@ -23,7 +23,7 @@ def indexTypeUser(request):
 # asistence---------------------------------------
 def indexasistence(request):
     asistences=Asistence.objects.all()
-    return render(request, "Asistencias.html", {"asistences": asistences})
+    return render(request, "bootstrap/Asistencias.html", {"asistences": asistences})
 
 def generate_qr(request, data):
     qr = qrcode.QRCode(
@@ -40,3 +40,8 @@ def generate_qr(request, data):
     response =HttpResponse(content_type="image/png")
     img.save(response, "PNG")
     return response
+
+
+def formUser(request):
+    Ty=TypeUser.objects.all()
+    return render(request, "bootstrap/register.html", {"typeUser": Ty})
