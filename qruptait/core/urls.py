@@ -11,5 +11,6 @@ urlpatterns = [
     path("users/save",views.createUser, name="users_save"),
     path('asistencia',views.indexasistence, name='asistencia'),
     path('generate_qr/<str:data>/', views.generate_qr, name='generate_qr'),
+    path('video_feed/', views.video_feed, name='video_feed'),
 ]
 
