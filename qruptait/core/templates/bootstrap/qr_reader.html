@@ -1,0 +1,68 @@
+<!-- qr_reader.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Reader</title>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/grid.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/version.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/detector.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/formatinf.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/errorlevel.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/bitmat.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/datablock.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/bmparser.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/datamask.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/rsdecoder.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/gf256poly.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/gf256.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/decoder.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/qrcode.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/findpat.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/databr.js"></script>
+    <script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/grid.js"></script>
+    <script>
+        // Función para leer el código QR
+        function readQRCode() {
+            var video = document.createElement("video");
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext("2d");
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function (err) {
+                    console.error("Error accessing the camera: ", err);
+                });
+
+            // Espera a que la cámara esté lista
+            video.addEventListener('canplay', function () {
+                setInterval(function () {
+                    // Dibuja el video en el canvas
+                    context.drawImage(video, 0, 0, 300, 225);
+
+                    try {
+                        // Lee el código QR
+                        var imageData = context.getImageData(0, 0, 300, 225);
+                        var code = jsQR(imageData.data, imageData.width, imageData.height);
+                        
+                        if (code) {
+                            alert("QR Code Data: " + code.data);
+                            video.pause();
+                        }
+                    } catch (error) {
+                        console.error("Error reading QR code: ", error);
+                    }
+                }, 1000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>QR Code Reader</h1>
+    <button onclick="readQRCode()">Start QR Code Reader</button>
+</body>
+</html>
