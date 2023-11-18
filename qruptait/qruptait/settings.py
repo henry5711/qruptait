@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+    'core',
+    'qr_code',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #ROOT_URLCONF = 'qruptait.urls'
+# settings.py
+QR_CODE_VERSION = 5
+QR_CODE_IMAGE_FORMAT = 'png'
+
