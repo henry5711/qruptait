@@ -45,3 +45,13 @@ def generate_qr(request, data):
 def formUser(request):
     Ty=TypeUser.objects.all()
     return render(request, "bootstrap/register.html", {"typeUser": Ty})
+
+def createUser(request):
+    user=User.objects.create(
+        ci=request.POST['ci'],
+        name1=request.POST['name1'],
+        name2=request.POST['name2'],
+        lasname1=request.POST['lasname1'],
+        lastname2=request.POST['lastname2'],
+        
+    )
