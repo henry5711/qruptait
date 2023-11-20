@@ -12,5 +12,6 @@ urlpatterns = [
     path('asistencia',views.indexasistence, name='asistencia'),
     path('generate_qr/<str:data>/', views.generate_qr, name='generate_qr'),
     path('qr_reader/', views.qr_reader, name='qr_reader'),
+    path('create/asistence/<str:user>', views.createAsistence, name='create_asistence'),
 ]
 

@@ -1,55 +1,35 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lector de código QR con JavaScript</title>
+    <title>Document</title>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+   
 </head>
+
 <body>
-    <video id="qr-video" width="100%" height="100%" playsinline></video>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.min.js"></script>
-    <script>
-        // Obtener acceso a la cámara
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-            .then(function (stream) {
-                // Asignar el stream al elemento de video
-                document.getElementById('qr-video').srcObject = stream;
-
-                // Función para escanear el código QR
-                function scanQRCode() {
-                    var video = document.getElementById('qr-video');
-                    var canvas = document.createElement('canvas');
-                    var context = canvas.getContext('2d');
-
-                    // Configurar el tamaño del canvas para coincidir con el tamaño del video
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-
-                    // Dibujar el video en el canvas
-                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                    // Obtener la información de la imagen del canvas
-                    var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-                    // Escanear el código QR
-                    var code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                    // Si se encuentra un código QR, imprímelo en la consola
-                    if (code) {
-                        console.log('Código QR detectado:', code.data);
-                        // Puedes realizar acciones adicionales con el contenido del código QR aquí
-                    }
-
-                    // Repetir la función para escanear en el próximo cuadro de animación
-                    requestAnimationFrame(scanQRCode);
-                }
-
-                // Llamar a la función para escanear el código QR
-                scanQRCode();
-            })
-            .catch(function (error) {
-                console.error('Error al acceder a la cámara: ', error);
-            });
-    </script>
+    <div id="reader" width="500px"></div>
 </body>
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        // handle the scanned code as you like, for example:
+        window.location.href = `/create/asistence/${decodedText}`
+        html5QrcodeScanner.clear();
+        console.log(`Code matched = ${decodedText}`, decodedResult);
+    }
+
+    function onScanFailure(error) {
+        // handle scan failure, usually better to ignore and keep scanning.
+        // for example:
+        console.warn(`Code scan error = ${error}`);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: { width: 500, height: 100 } },
+/* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
 </html>

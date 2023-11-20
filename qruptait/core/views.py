@@ -4,6 +4,7 @@ from .models import User
 from .models import TypeUser
 from .models import Asistence
 from django.http import HttpResponse,StreamingHttpResponse
+from django.utils import timezone
 
 
 
@@ -65,3 +66,12 @@ def createUser(request):
 
 def qr_reader(request):
     return render(request, 'bootstrap/qr_reader.html')
+
+
+def createAsistence(request,user):
+    asistence=Asistence.objects.create(
+      user_id=user,
+      asistence=timezone.now())
+    asistence.save()
+    asistences=Asistence.objects.all()
+    return render(request, "bootstrap/Asistencias.html", {"asistences": asistences})
