@@ -64,4 +64,4 @@ def createUser(request):
 
 
 def qr_reader(request):
-    return render(request, 'qr_reader.html')
+    return render(request, 'bootstrap/qr_reader.html')
