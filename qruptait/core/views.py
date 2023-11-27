@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 import qrcode
 from .models import User
@@ -5,6 +6,7 @@ from .models import TypeUser
 from .models import Asistence
 from django.http import HttpResponse,StreamingHttpResponse
 from django.utils import timezone
+from reportlab.pdfgen import canvas
 
 
 
