@@ -7,6 +7,8 @@ from .models import Asistence
 from django.http import HttpResponse,StreamingHttpResponse
 from django.utils import timezone
 from reportlab.pdfgen import canvas
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 
@@ -77,3 +79,26 @@ def createAsistence(request,user):
     asistence.save()
     asistences=Asistence.objects.all()
     return render(request, "bootstrap/Asistencias.html", {"asistences": asistences})
+
+def render_to_pdf(template_path, context_dict):
+    template = get_template(template_path)
+    html = template.render(context_dict)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="archivo.pdf"'
+
+    # Create a PDF object, and write it to the response.
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    # If the PDF was created successfully, return the response.
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF', status=500)
+
+    return response
+
+
+def generar_reporte_pdf(request):
+    context = {'message': '¡Hola, este es tu PDF desde Django con HTML!'}
+    asistences=Asistence.objects.all()
+    context={"asistences": asistences}
+    pdf = render_to_pdf('bootstrap/AsistenciasPdf.html', context)
+    return HttpResponse(pdf, content_type='application/pdf')
